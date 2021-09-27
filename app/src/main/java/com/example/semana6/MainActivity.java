@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
                         sendMsg("leftTrue");
-                        break;
+
                     /*case MotionEvent.ACTION_UP:
                         sendMsg("leftFalse");
                         break;*/
@@ -99,10 +99,12 @@ public class MainActivity extends AppCompatActivity {
                     r = (int) (Math.random()*255);
                     g = (int) (Math.random()*255);
                     b = (int) (Math.random()*255);
-                    sendMsg(""+r+"."+g+"."+b);
+                    sendMsg("colorx"+r+"x"+g+"x"+b);
                     cb.setBackgroundColor(Color.rgb(r,g,b));
                 }
         );
+
+        serveriniciar();
     }
 
     public void serveriniciar() {
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 ()->{
                     try {
                         //cambiar aqui la direccion ip
-                        socket = new Socket("10.0.0.2",5000);
+                        socket = new Socket("10.0.2.2",5000);
                         OutputStream os = socket.getOutputStream();
                         OutputStreamWriter osw = new OutputStreamWriter(os);
                         writer = new BufferedWriter(osw);
@@ -127,9 +129,10 @@ public class MainActivity extends AppCompatActivity {
         new Thread(()->{
            try {
                writer.write(msg+"\n");
+               writer.flush();
            } catch (IOException e){
                e.printStackTrace();
            }
-        });
+        }).start();
     }
 }
